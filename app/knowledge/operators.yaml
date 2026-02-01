@@ -1,0 +1,155 @@
+version: "1.0"
+last_updated: "2026-02"
+
+operators:
+  # Tarifa
+  - name: "Free Your Mind Kite"
+    destination: "Tarifa"
+    activities: ["kitesurfing"]
+    specialty: "IKO certified kite lessons and camps"
+    price_range: "$80-150/lesson"
+    website: "freeyourmindkite.com"
+    notes: "One of the top schools in Tarifa. All levels."
+    last_verified: "2026-01"
+
+  - name: "Tarifa Surf Center"
+    destination: "Tarifa"
+    activities: ["surfing", "SUP"]
+    specialty: "Surf lessons and board rentals"
+    price_range: "$50-80/lesson"
+    notes: "Good for beginners. Check Los Lances conditions."
+    last_verified: "2026-01"
+
+  - name: "Whale Watch Tarifa"
+    destination: "Tarifa"
+    activities: ["whale watching", "dolphin watching"]
+    specialty: "Strait of Gibraltar marine life tours"
+    price_range: "$40-60/person"
+    notes: "Best Apr-Oct for orcas. Year-round dolphins."
+    last_verified: "2026-01"
+
+  # Cape Town
+  - name: "Gary's Surf School"
+    destination: "Cape Town"
+    activities: ["surfing"]
+    specialty: "Muizenberg surf lessons, all levels"
+    price_range: "$30-50/lesson"
+    notes: "Muizenberg is best for beginners. Gary is legendary."
+    last_verified: "2026-01"
+
+  - name: "High Five Kite"
+    destination: "Cape Town"
+    activities: ["kitesurfing"]
+    specialty: "Big Bay kite lessons and rentals"
+    price_range: "$80-120/lesson"
+    notes: "Dec-Mar is prime wind season. Cold water!"
+    last_verified: "2026-01"
+
+  - name: "Table Mountain Hiking"
+    destination: "Cape Town"
+    activities: ["hiking"]
+    specialty: "Guided Table Mountain routes"
+    price_range: "$50-100/person"
+    notes: "Multiple routes from easy to challenging."
+    last_verified: "2026-01"
+
+  # Dakhla
+  - name: "Dakhla Spirit"
+    destination: "Dakhla"
+    activities: ["kitesurfing", "windsurfing"]
+    specialty: "Lagoon lessons and camps"
+    price_range: "$100-200/lesson"
+    notes: "On the lagoon. Great for progression."
+    last_verified: "2026-01"
+
+  - name: "Dakhla Club"
+    destination: "Dakhla"
+    activities: ["kitesurfing"]
+    specialty: "Premium kite experience"
+    price_range: "$150-300/day"
+    notes: "Higher end. Includes transfers and lunch."
+    last_verified: "2026-01"
+
+  # Fuerteventura
+  - name: "Flag Beach Watersports"
+    destination: "Fuerteventura"
+    activities: ["kitesurfing", "windsurfing"]
+    specialty: "Flag Beach and Sotavento"
+    price_range: "$80-150/lesson"
+    notes: "Both wave and flatwater options."
+    last_verified: "2026-01"
+
+  - name: "Surf School Fuerteventura"
+    destination: "Fuerteventura"
+    activities: ["surfing"]
+    specialty: "North shore surf lessons"
+    price_range: "$50-80/lesson"
+    notes: "Corralejo area. Winter swells best."
+    last_verified: "2026-01"
+
+  # Sal
+  - name: "Surf Zone"
+    destination: "Sal"
+    activities: ["kitesurfing", "surfing"]
+    specialty: "Kite Beach operations"
+    price_range: "$70-120/lesson"
+    notes: "Good mix of flat water and waves."
+    last_verified: "2026-01"
+
+  - name: "Ponta Preta Surf Camp"
+    destination: "Sal"
+    activities: ["surfing"]
+    specialty: "Wave surfing at Ponta Preta"
+    price_range: "$60-100/session"
+    notes: "For intermediate+ only. Powerful waves."
+    last_verified: "2026-01"
+
+  # Bali
+  - name: "Odysseys Surf School"
+    destination: "Bali"
+    activities: ["surfing"]
+    specialty: "Uluwatu and Padang Padang guiding"
+    price_range: "$50-100/session"
+    notes: "Reef breaks. Need experience for Ulu."
+    last_verified: "2026-01"
+
+  - name: "Blue Corner Dive"
+    destination: "Bali"
+    activities: ["diving"]
+    specialty: "Nusa Penida manta dives"
+    price_range: "$80-150/dive"
+    notes: "Strong currents at Manta Point. Advanced divers."
+    last_verified: "2026-01"
+
+  - name: "Bali Yoga Shala"
+    destination: "Bali"
+    activities: ["yoga"]
+    specialty: "Ubud yoga retreats and classes"
+    price_range: "$15-50/class"
+    notes: "Drop-in classes available. Many styles."
+    last_verified: "2026-01"
+
+  # Queenstown
+  - name: "AJ Hackett Bungy"
+    destination: "Queenstown"
+    activities: ["bungy jumping"]
+    specialty: "Original bungy jumping"
+    price_range: "$150-300/jump"
+    notes: "Kawarau Bridge is iconic. Book ahead in summer."
+    last_verified: "2026-01"
+
+  - name: "Routeburn Track Guided Walks"
+    destination: "Queenstown"
+    activities: ["hiking"]
+    specialty: "Multi-day Great Walk guiding"
+    price_range: "$500-1500/trek"
+    notes: "Book months ahead for Great Walks huts."
+    last_verified: "2026-01"
+
+  - name: "Canyoning Queenstown"
+    destination: "Queenstown"
+    activities: ["canyoning"]
+    specialty: "Routeburn and 12 Mile Delta canyons"
+    price_range: "$200-350/day"
+    notes: "Summer only. Spectacular scenery."
+    last_verified: "2026-01"

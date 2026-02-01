@@ -1,0 +1,317 @@
+version: "1.0"
+last_updated: "2026-02"
+
+destinations:
+  - name: Tarifa
+    country: Spain
+    region: Andalusia
+    coordinates: [36.0143, -5.6044]
+    activities:
+      kitesurfing:
+        season: [5, 6, 7, 8, 9, 10, 11]
+        reliability: "80-100%"
+        conditions: "Strong Levante (east) and Poniente (west) winds, 20-40 knots typical. Flat water at Valdevaqueros, waves at Los Lances."
+        skill_level: "intermediate-advanced"
+        notes: "Europe's wind capital. Levante is stronger and gustier, Poniente is cleaner. Multiple schools and rental shops."
+      surfing:
+        season: [11, 12, 1, 2, 3]
+        reliability: "60-70%"
+        conditions: "Atlantic swells hit when Levante calms down. Beach breaks with occasional overhead waves."
+        skill_level: "beginner-intermediate"
+        notes: "Best when wind drops between seasons. Check Los Lances and El Palmar nearby."
+      windsurfing:
+        season: [5, 6, 7, 8, 9, 10, 11]
+        reliability: "80-100%"
+        conditions: "Same winds as kitesurfing, world-class conditions for speed and freestyle."
+        skill_level: "intermediate-advanced"
+        notes: "Historic windsurfing destination before kitesurfing took over."
+    climate:
+      best_months: [5, 6, 9, 10]
+      avg_temp_c:
+        summer: 28
+        winter: 14
+        spring: 20
+        autumn: 22
+      rainy_months: [11, 12, 1, 2]
+    logistics:
+      airports: ["AGP", "JER", "SVQ"]
+      from_airport: "Malaga (AGP) 1.5 hrs, Gibraltar (GIB) 45 min, Jerez (JER) 1 hr"
+      visa: "Schengen visa-free for US/UK, 90-day stay"
+    accommodation:
+      style: "Boutique hotels, surf apartments, eco-lodges"
+      budget_range: "$80-180/night"
+      areas: ["Old Town", "Valdevaqueros", "Los Lances"]
+    vibe: "Laid-back Andalusian beach town with strong wind sports culture. Bohemian, international crowd."
+    why_go: "Most reliable wind in Europe May-October. Great food scene, walkable old town, easy access from major airports."
+    why_skip: "Wind can be relentless (too much). Limited surf compared to Portugal. Can be crowded in peak summer."
+    last_updated: "2026-02"
+
+  - name: Cape Town
+    country: South Africa
+    region: Western Cape
+    coordinates: [-33.9249, 18.4241]
+    activities:
+      kitesurfing:
+        season: [11, 12, 1, 2, 3]
+        reliability: "70-85%"
+        conditions: "Southeast trade winds (Cape Doctor), 20-35 knots. Big Bay for flatwater, Blouberg for waves."
+        skill_level: "intermediate-advanced"
+        notes: "World-class conditions but cold water (14-16°C). 5/4mm wetsuit required."
+      surfing:
+        season: [4, 5, 6, 7, 8, 9]
+        reliability: "75-85%"
+        conditions: "Winter swells from SW bring consistent waves. Muizenberg for beginners, Dungeons for experts."
+        skill_level: "all levels"
+        notes: "Shark presence - use caution at dawn/dusk. Many great point breaks and beach breaks."
+      hiking:
+        season: [3, 4, 5, 9, 10, 11]
+        reliability: "N/A"
+        conditions: "Table Mountain, Lion's Head, Cape Point. Variable weather, be prepared for sudden changes."
+        skill_level: "beginner-advanced"
+        notes: "Shoulder seasons best - less wind, fewer crowds. Many trail options from easy to technical."
+    climate:
+      best_months: [3, 4, 10, 11]
+      avg_temp_c:
+        summer: 26
+        winter: 12
+        spring: 18
+        autumn: 20
+      rainy_months: [5, 6, 7, 8]
+    logistics:
+      airports: ["CPT"]
+      from_airport: "Cape Town International (CPT) 30-45 min to most spots"
+      visa: "Visa-free for US/UK citizens, 90-day stay"
+    accommodation:
+      style: "Design hotels, guesthouses, beachfront apartments"
+      budget_range: "$60-200/night"
+      areas: ["Blouberg", "Camps Bay", "Muizenberg", "City Bowl"]
+    vibe: "Cosmopolitan city with dramatic natural scenery. Great food, wine, and outdoor culture."
+    why_go: "World-class wind and waves, stunning scenery, excellent value, great food and wine scene."
+    why_skip: "Long-haul flight, cold water, summer wind can be overpowering. Safety considerations in some areas."
+    last_updated: "2026-02"
+
+  - name: Dakhla
+    country: Morocco
+    region: Western Sahara
+    coordinates: [23.7148, -15.9370]
+    activities:
+      kitesurfing:
+        season: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        reliability: "85-95%"
+        conditions: "Trade winds, 18-30 knots, butter-flat lagoon. Consistent side-onshore. One of the most reliable spots globally."
+        skill_level: "beginner-advanced"
+        notes: "Perfect for learning and progression. Multiple camps on the lagoon with downwinders available."
+      windsurfing:
+        season: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        reliability: "85-95%"
+        conditions: "Same excellent conditions as kitesurfing. Flat water ideal for speed and freestyle."
+        skill_level: "all levels"
+        notes: "Less crowded than kitesurfing. Several dedicated windsurf centers."
+      surfing:
+        season: [11, 12, 1, 2, 3, 4]
+        reliability: "60-70%"
+        conditions: "Ocean waves on the peninsula. Point Dakhla has good rights when swell arrives."
+        skill_level: "intermediate-advanced"
+        notes: "Better surf spots further north (Foum El Bouir). Requires transport."
+    climate:
+      best_months: [3, 4, 5, 10, 11]
+      avg_temp_c:
+        summer: 28
+        winter: 20
+        spring: 24
+        autumn: 26
+      rainy_months: []
+    logistics:
+      airports: ["VIL"]
+      from_airport: "Dakhla Airport (VIL) 30 min. Flights via Casablanca or direct from Paris/Europe seasonally."
+      visa: "Visa-free for US/UK citizens, 90-day stay"
+    accommodation:
+      style: "Kitesurf camps, eco-lodges, boutique hotels"
+      budget_range: "$100-250/night (often all-inclusive)"
+      areas: ["Dakhla Lagoon", "Dragon Island", "Dakhla Town"]
+    vibe: "Remote desert lagoon paradise. Kitesurf/windsurf focused, relaxed, unplugged atmosphere."
+    why_go: "One of the world's most reliable wind spots. Flat lagoon perfect for progression. Unique desert landscape."
+    why_skip: "Remote location with limited nightlife. Can feel isolated. Limited activities beyond water sports."
+    last_updated: "2026-02"
+
+  - name: Fuerteventura
+    country: Spain
+    region: Canary Islands
+    coordinates: [28.3587, -14.0537]
+    activities:
+      kitesurfing:
+        season: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        reliability: "70-85%"
+        conditions: "Trade winds year-round, stronger in summer (July-Sept). Sotavento lagoon is legendary flat water spot."
+        skill_level: "all levels"
+        notes: "World Championship venue. Flag Beach for waves, Sotavento lagoon for flat water."
+      surfing:
+        season: [10, 11, 12, 1, 2, 3, 4]
+        reliability: "75-85%"
+        conditions: "North shore gets powerful Atlantic swells. Reef and beach breaks. Lobos Island for advanced."
+        skill_level: "intermediate-advanced"
+        notes: "North shore (Corralejo area) best for surf. Can be powerful and localized at popular spots."
+      windsurfing:
+        season: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        reliability: "70-85%"
+        conditions: "Same as kitesurfing. Excellent wave sailing on the north shore."
+        skill_level: "intermediate-advanced"
+        notes: "Historic PWA wave sailing venue."
+    climate:
+      best_months: [4, 5, 9, 10]
+      avg_temp_c:
+        summer: 26
+        winter: 18
+        spring: 22
+        autumn: 24
+      rainy_months: [11, 12, 1]
+    logistics:
+      airports: ["FUE"]
+      from_airport: "Fuerteventura Airport (FUE) 30-45 min to main spots. Many direct European flights."
+      visa: "Schengen visa-free for US/UK, 90-day stay"
+    accommodation:
+      style: "Beach resorts, surf houses, apartments"
+      budget_range: "$70-150/night"
+      areas: ["Corralejo", "El Cotillo", "Costa Calma"]
+    vibe: "Relaxed island vibes with strong surf/kite culture. More developed than Dakhla, less crowded than Tarifa."
+    why_go: "Year-round wind and waves. Easy flights from Europe. Good variety of spots for different conditions."
+    why_skip: "Can be touristy in main areas. Water is cooler than expected (18-22°C). Some spots get crowded."
+    last_updated: "2026-02"
+
+  - name: Sal
+    country: Cape Verde
+    region: Barlavento Islands
+    coordinates: [16.7260, -22.9389]
+    activities:
+      kitesurfing:
+        season: [11, 12, 1, 2, 3, 4, 5, 6]
+        reliability: "80-90%"
+        conditions: "Trade winds 15-30 knots. Kite Beach has flat water and waves. Santa Maria bay for beginners."
+        skill_level: "all levels"
+        notes: "Reliable trade winds, warm water (22-26°C). Good mix of flat water and wave spots."
+      surfing:
+        season: [11, 12, 1, 2, 3, 4]
+        reliability: "70-80%"
+        conditions: "NW swells bring chest to overhead waves. Ponta Preta is world-class right point break."
+        skill_level: "intermediate-advanced"
+        notes: "Ponta Preta can hold big swells. Several other spots around the island for variety."
+      windsurfing:
+        season: [11, 12, 1, 2, 3, 4, 5, 6]
+        reliability: "80-90%"
+        conditions: "Excellent wave sailing at Ponta Preta. Trade winds very consistent."
+        skill_level: "intermediate-advanced"
+        notes: "PWA wave tour stop. World-class conditions for expert wave sailors."
+    climate:
+      best_months: [11, 12, 1, 2, 3, 4]
+      avg_temp_c:
+        summer: 28
+        winter: 24
+        spring: 26
+        autumn: 27
+      rainy_months: [8, 9]
+    logistics:
+      airports: ["SID"]
+      from_airport: "Amilcar Cabral Airport (SID) 15-20 min to Santa Maria. Direct flights from Europe."
+      visa: "Visa on arrival for US/UK citizens, €30"
+    accommodation:
+      style: "Kite hotels, guesthouses, small resorts"
+      budget_range: "$60-150/night"
+      areas: ["Santa Maria", "Kite Beach", "Ponta Preta"]
+    vibe: "Authentic African-Portuguese island culture. Relaxed pace, friendly locals, focus on water sports."
+    why_go: "Warm water, reliable wind, world-class wave spot (Ponta Preta). Less crowded than Canaries."
+    why_skip: "Remote island - limited infrastructure and nightlife. Can feel small after a week. Dusty landscape."
+    last_updated: "2026-02"
+
+  - name: Bali
+    country: Indonesia
+    region: Lesser Sunda Islands
+    coordinates: [-8.4095, 115.1889]
+    activities:
+      surfing:
+        season: [4, 5, 6, 7, 8, 9, 10]
+        reliability: "80-90%"
+        conditions: "Dry season brings consistent SW swells. Uluwatu, Padang Padang, Keramas world-class. All skill levels catered."
+        skill_level: "all levels"
+        notes: "Dry season (Apr-Oct) best. Wet season has surf but inconsistent and rainy. Reef breaks dominate."
+      diving:
+        season: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        reliability: "N/A"
+        conditions: "Warm water (26-30°C) year-round. Manta rays at Nusa Penida, WWII wrecks at Tulamben, macro at Amed."
+        skill_level: "all levels"
+        notes: "East Bali (Amed, Tulamben) best visibility. Nusa Penida has strong currents - advanced divers."
+      yoga:
+        season: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        reliability: "N/A"
+        conditions: "Ubud is the yoga capital. Hundreds of studios, retreats, and teacher trainings available."
+        skill_level: "all levels"
+        notes: "Combine with surf trip for balance. Many surf-yoga packages available."
+    climate:
+      best_months: [4, 5, 6, 9, 10]
+      avg_temp_c:
+        summer: 30
+        winter: 28
+        spring: 30
+        autumn: 29
+      rainy_months: [12, 1, 2, 3]
+    logistics:
+      airports: ["DPS"]
+      from_airport: "Ngurah Rai (DPS) 30 min - 2 hrs depending on destination and traffic."
+      visa: "Visa on arrival for US/UK citizens, $35, 30 days extendable"
+    accommodation:
+      style: "Boutique hotels, surf villas, eco-resorts, budget guesthouses"
+      budget_range: "$30-200/night"
+      areas: ["Uluwatu/Bukit", "Canggu", "Ubud", "Amed"]
+    vibe: "Spiritual island culture meets surf paradise. Great food, beautiful temples, rice terraces."
+    why_go: "World-class waves for all levels, incredible value, amazing food, rich culture, yoga scene."
+    why_skip: "Overtourism in some areas (Canggu, Kuta). Traffic can be brutal. Rainy season December-March."
+    last_updated: "2026-02"
+
+  - name: Queenstown
+    country: New Zealand
+    region: South Island
+    coordinates: [-45.0312, 168.6626]
+    activities:
+      skiing:
+        season: [6, 7, 8, 9, 10]
+        reliability: "70-80%"
+        conditions: "Four ski fields within 45 min. Remarkables and Coronet Peak closest. The Remarkables has great terrain parks."
+        skill_level: "all levels"
+        notes: "Southern hemisphere winter (Jun-Oct). Smaller than North American resorts but uncrowded."
+      hiking:
+        season: [11, 12, 1, 2, 3, 4]
+        reliability: "N/A"
+        conditions: "World-class multi-day tracks (Routeburn, Milford). Day hikes around lake and Ben Lomond."
+        skill_level: "all levels"
+        notes: "Great Walks require booking in advance (Oct-Apr). Weather changes fast - be prepared."
+      canyoning:
+        season: [12, 1, 2, 3]
+        reliability: "N/A"
+        conditions: "Routeburn Canyoning, 12 Mile Delta. Jumping, sliding, abseiling through stunning gorges."
+        skill_level: "beginner-intermediate"
+        notes: "Summer only due to water temps. Guided trips required. Absolutely spectacular scenery."
+      bungy_jumping:
+        season: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        reliability: "N/A"
+        conditions: "AJ Hackett invented commercial bungy here. Multiple sites including original Kawarau Bridge."
+        skill_level: "beginner"
+        notes: "Year-round operation. Birthplace of bungy jumping - bucket list experience."
+    climate:
+      best_months: [12, 1, 2, 3]
+      avg_temp_c:
+        summer: 22
+        winter: 8
+        spring: 14
+        autumn: 14
+      rainy_months: [5, 6, 7, 8]
+    logistics:
+      airports: ["ZQN"]
+      from_airport: "Queenstown Airport (ZQN) 15-20 min to town. Spectacular landing over lake."
+      visa: "NZeTA required for US/UK citizens, ~$12, 90-day stay"
+    accommodation:
+      style: "Boutique lodges, adventure hotels, lakefront apartments"
+      budget_range: "$100-300/night"
+      areas: ["Town Centre", "Arrowtown", "Glenorchy"]
+    vibe: "Adventure capital of the world. Stunning mountain-lake scenery. Active, outdoorsy crowd."
+    why_go: "Unmatched variety of adventure activities. Stunning scenery. Southern Alps hiking. Winter skiing."
+    why_skip: "Expensive (NZ prices). Remote from other destinations. Weather highly variable."
+    last_updated: "2026-02"

@@ -1,0 +1,7 @@
+from .health import router as health_router
+from .preferences import router as preferences_router
+from .chat import router as chat_router
+from .itineraries import router as itineraries_router
+from .flights import router as flights_router
+from .accommodations import router as accommodations_router
+from .activities import router as activities_router

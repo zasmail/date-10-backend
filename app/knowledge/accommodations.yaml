@@ -1,0 +1,163 @@
+version: "1.0"
+last_updated: "2026-02"
+
+accommodations:
+  # Tarifa
+  - name: "Hotel Arte Vida"
+    destination: "Tarifa"
+    area: "Old Town"
+    style: "Boutique hotel"
+    price_range: "$120-180/night"
+    highlights: ["Rooftop terrace with views", "Walking distance to beach", "Moroccan-inspired design"]
+    best_for: ["Couples", "Design lovers", "Beach access"]
+    last_verified: "2026-01"
+
+  - name: "Hurricane Hotel"
+    destination: "Tarifa"
+    area: "Los Lances Beach"
+    style: "Kitesurf hotel"
+    price_range: "$150-250/night"
+    highlights: ["On the beach", "Kite storage", "Pool", "Restaurant"]
+    best_for: ["Kitesurfers", "Wind sports", "Beach lovers"]
+    last_verified: "2026-01"
+
+  - name: "La Codorniz"
+    destination: "Tarifa"
+    area: "Town center"
+    style: "Boutique guesthouse"
+    price_range: "$80-120/night"
+    highlights: ["Authentic local feel", "Rooftop", "Central location"]
+    best_for: ["Budget conscious", "Solo travelers", "Local experience"]
+    last_verified: "2026-01"
+
+  # Cape Town
+  - name: "The Silo Hotel"
+    destination: "Cape Town"
+    area: "V&A Waterfront"
+    style: "Design hotel"
+    price_range: "$400-800/night"
+    highlights: ["Zeitz MOCAA museum", "Rooftop pool", "Iconic architecture"]
+    best_for: ["Design lovers", "Art enthusiasts", "Luxury seekers"]
+    last_verified: "2026-01"
+
+  - name: "POD Camps Bay"
+    destination: "Cape Town"
+    area: "Camps Bay"
+    style: "Boutique hotel"
+    price_range: "$200-350/night"
+    highlights: ["Ocean views", "Modern design", "Pool", "Beach access"]
+    best_for: ["Beach lovers", "Couples", "Sunset views"]
+    last_verified: "2026-01"
+
+  - name: "The Backpack"
+    destination: "Cape Town"
+    area: "City Bowl"
+    style: "Boutique hostel"
+    price_range: "$30-80/night"
+    highlights: ["Social atmosphere", "Central location", "Tours desk"]
+    best_for: ["Solo travelers", "Budget conscious", "Social travelers"]
+    last_verified: "2026-01"
+
+  # Dakhla
+  - name: "Dakhla Attitude"
+    destination: "Dakhla"
+    area: "Lagoon"
+    style: "Kitesurf camp"
+    price_range: "$150-250/night"
+    highlights: ["On the lagoon", "All-inclusive option", "Kite school", "Desert views"]
+    best_for: ["Kitesurfers", "Wind sports", "All-inclusive seekers"]
+    last_verified: "2026-01"
+
+  - name: "Westpoint Dakhla"
+    destination: "Dakhla"
+    area: "Lagoon"
+    style: "Eco-lodge"
+    price_range: "$100-180/night"
+    highlights: ["Sustainable", "Desert location", "Yoga space", "Kite storage"]
+    best_for: ["Eco-conscious", "Kitesurfers", "Yoga practitioners"]
+    last_verified: "2026-01"
+
+  # Fuerteventura
+  - name: "Avanti Boutique Hotel"
+    destination: "Fuerteventura"
+    area: "Corralejo"
+    style: "Boutique hotel"
+    price_range: "$100-160/night"
+    highlights: ["Adults only", "Rooftop pool", "Central Corralejo"]
+    best_for: ["Couples", "Quiet seekers", "Town access"]
+    last_verified: "2026-01"
+
+  - name: "Wave House"
+    destination: "Fuerteventura"
+    area: "El Cotillo"
+    style: "Surf house"
+    price_range: "$60-100/night"
+    highlights: ["Surf community", "Near breaks", "Shared kitchen"]
+    best_for: ["Surfers", "Budget conscious", "Social travelers"]
+    last_verified: "2026-01"
+
+  # Sal
+  - name: "Morabeza Hotel"
+    destination: "Sal"
+    area: "Santa Maria"
+    style: "Beach resort"
+    price_range: "$120-200/night"
+    highlights: ["On the beach", "Multiple pools", "Spa", "All-inclusive option"]
+    best_for: ["Beach lovers", "Families", "Relaxation"]
+    last_verified: "2026-01"
+
+  - name: "Dunas de Sal"
+    destination: "Sal"
+    area: "Santa Maria"
+    style: "Boutique hotel"
+    price_range: "$80-140/night"
+    highlights: ["Walking to beach", "Pool", "Quiet location"]
+    best_for: ["Couples", "Quiet seekers", "Budget boutique"]
+    last_verified: "2026-01"
+
+  # Bali
+  - name: "Uluwatu Surf Villas"
+    destination: "Bali"
+    area: "Uluwatu"
+    style: "Surf villa"
+    price_range: "$150-300/night"
+    highlights: ["Infinity pool", "Cliff views", "Near breaks", "Restaurant"]
+    best_for: ["Surfers", "Couples", "Sunset views"]
+    last_verified: "2026-01"
+
+  - name: "The Slow"
+    destination: "Bali"
+    area: "Canggu"
+    style: "Design hotel"
+    price_range: "$200-350/night"
+    highlights: ["Brutalist design", "Rooftop", "Trendy area", "Pool"]
+    best_for: ["Design lovers", "Instagram", "Canggu scene"]
+    last_verified: "2026-01"
+
+  - name: "Bambu Indah"
+    destination: "Bali"
+    area: "Ubud"
+    style: "Eco-resort"
+    price_range: "$300-500/night"
+    highlights: ["Antique Javanese houses", "River setting", "Natural pool", "Sustainability"]
+    best_for: ["Eco-conscious", "Unique experience", "Nature lovers"]
+    last_verified: "2026-01"
+
+  # Queenstown
+  - name: "Eichardt's Private Hotel"
+    destination: "Queenstown"
+    area: "Lakefront"
+    style: "Luxury boutique"
+    price_range: "$400-700/night"
+    highlights: ["Historic building", "Lakefront", "Fine dining", "Central location"]
+    best_for: ["Luxury seekers", "Foodies", "Romance"]
+    last_verified: "2026-01"
+
+  - name: "Adventure Queenstown Hostel"
+    destination: "Queenstown"
+    area: "Town center"
+    style: "Adventure hostel"
+    price_range: "$40-80/night"
+    highlights: ["Activity bookings", "Social", "Central", "Mountain views"]
+    best_for: ["Solo travelers", "Budget conscious", "Adventure seekers"]
+    last_verified: "2026-01"
