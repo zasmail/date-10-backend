@@ -5,3 +5,7 @@ from .itineraries import router as itineraries_router
 from .flights import router as flights_router
 from .accommodations import router as accommodations_router
 from .activities import router as activities_router
+from .share import router as share_router
+from .versions import router as versions_router
+from .geocoding import router as geocoding_router
+from .refinements import router as refinements_router
