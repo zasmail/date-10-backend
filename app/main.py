@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 
@@ -19,9 +20,24 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+# CORS origins - allow localhost for dev, plus any configured frontend URLs
+cors_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# Add configured frontend URL(s) from environment
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    cors_origins.append(frontend_url)
+
+# Also allow all Vercel preview deployments
+cors_origins.append("https://*.vercel.app")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=cors_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow all Vercel subdomains
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
