@@ -32,7 +32,12 @@ def get_conversation_messages(session: Session, conversation_id: str) -> List[Di
         .where(Message.conversation_id == conversation_id)
         .order_by(Message.created_at)
     ).all()
-    return [{"role": m.role, "content": m.content} for m in messages]
+    # Filter out messages with empty content (Claude API rejects these)
+    return [
+        {"role": m.role, "content": m.content}
+        for m in messages
+        if m.content and m.content.strip()
+    ]
 
 
 @router.post("/stream")
@@ -84,39 +89,53 @@ async def chat_stream(
         }
 
         async for chunk in stream_response(messages, preferences):
+            print(f"[DEBUG] Received chunk type: {chunk['type']}")  # Debug log
             if chunk["type"] == "text":
                 full_response += chunk["content"]
                 yield {"data": json.dumps(chunk)}
             elif chunk["type"] == "tool_start":
+                print(f"[DEBUG] Tool start: {chunk.get('tool_name')}")  # Debug log
                 yield {"data": json.dumps(chunk)}
             elif chunk["type"] == "flight_search_start":
                 yield {"data": json.dumps(chunk)}
             elif chunk["type"] == "itinerary":
                 # Track the itinerary for saving
+                print(f"[DEBUG] Itinerary received! Destination: {chunk['data'].get('destination')}")  # Debug log
                 generated_itineraries.append(chunk["data"])
                 yield {"data": json.dumps(chunk)}
             elif chunk["type"] == "flights":
-                yield {"data": json.dumps(chunk)}
+                # Ensure datetime objects are serialized as ISO strings
+                try:
+                    yield {"data": json.dumps(chunk, default=str)}
+                except Exception as e:
+                    print(f"[DEBUG] Error serializing flights: {e}")
+                    yield {"data": json.dumps({"type": "tool_error", "error": str(e)})}
             elif chunk["type"] == "tool_error":
+                print(f"[DEBUG] Tool error: {chunk.get('error')}")  # Debug log
                 yield {"data": json.dumps(chunk)}
             elif chunk["type"] == "done":
                 input_tokens = chunk["usage"]["input_tokens"]
                 output_tokens = chunk["usage"]["output_tokens"]
+                print(f"[DEBUG] Done. Itineraries collected: {len(generated_itineraries)}")  # Debug log
                 yield {"data": json.dumps(chunk)}
 
         # Save assistant message and itineraries after streaming completes
         with Session(engine) as save_session:
-            assistant_message = Message(
-                conversation_id=conversation_id,
-                role="assistant",
-                content=full_response,
-                input_tokens=input_tokens,
-                output_tokens=output_tokens,
-            )
-            save_session.add(assistant_message)
+            # Only save assistant message if it has content
+            if full_response and full_response.strip():
+                assistant_message = Message(
+                    conversation_id=conversation_id,
+                    role="assistant",
+                    content=full_response,
+                    input_tokens=input_tokens,
+                    output_tokens=output_tokens,
+                )
+                save_session.add(assistant_message)
 
             # Save any generated itineraries
+            print(f"[DEBUG] Saving {len(generated_itineraries)} itineraries to DB")  # Debug log
             for itinerary_data in generated_itineraries:
+                print(f"[DEBUG] Saving itinerary: {itinerary_data.get('destination')}")  # Debug log
                 itinerary = Itinerary(
                     conversation_id=conversation_id,
                     destination=itinerary_data.get("destination", ""),

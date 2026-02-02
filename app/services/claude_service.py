@@ -24,12 +24,12 @@ GENERATE_ITINERARY_TOOL = {
 - Help planning specific dates at a destination
 - A detailed trip proposal
 
-IMPORTANT: Always generate 2-3 distinct proposals with different themes (e.g., "Adventure Focus", "Relaxed Pace", "Cultural Immersion").
-
-Each proposal should have:
+Generate ONE complete proposal with:
 - A clear title and 2-3 sentence summary
 - Complete day-by-day breakdown with activities, times, and logistics
-- Budget estimate, highlights, and caveats""",
+- Budget estimate, highlights, and caveats
+
+If the user wants alternative options, they can request another itinerary with a different theme (e.g., "Adventure Focus", "Relaxed Pace", "Cultural Immersion").""",
     "input_schema": {
         "type": "object",
         "properties": {
@@ -50,104 +50,99 @@ Each proposal should have:
                 "description": "Number of travelers",
                 "default": 2,
             },
-            "proposals": {
-                "type": "array",
-                "description": "2-3 alternative itinerary proposals",
-                "minItems": 2,
-                "maxItems": 3,
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "title": {
-                            "type": "string",
-                            "description": "Proposal theme (e.g., 'Adventure Focus')",
-                        },
-                        "summary": {
-                            "type": "string",
-                            "description": "2-3 sentence overview of this option",
-                        },
-                        "days": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "day_number": {"type": "integer"},
-                                    "date": {"type": "string"},
-                                    "title": {"type": "string"},
-                                    "location": {"type": "string"},
-                                    "activities": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "time": {"type": "string"},
-                                                "name": {"type": "string"},
-                                                "description": {"type": "string"},
-                                                "duration": {"type": "string"},
-                                                "location": {"type": "string"},
-                                                "cost_estimate": {"type": "string"},
-                                                "booking_required": {
-                                                    "type": "boolean",
-                                                    "default": False,
-                                                },
-                                            },
-                                            "required": [
-                                                "time",
-                                                "name",
-                                                "description",
-                                                "duration",
-                                            ],
-                                        },
-                                    },
-                                    "accommodation": {
+            "proposal": {
+                "type": "object",
+                "description": "Single itinerary proposal",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Proposal theme (e.g., 'Adventure Focus', 'Balanced Exploration')",
+                    },
+                    "summary": {
+                        "type": "string",
+                        "description": "2-3 sentence overview of this itinerary",
+                    },
+                    "days": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "day_number": {"type": "integer"},
+                                "date": {"type": "string"},
+                                "title": {"type": "string"},
+                                "location": {"type": "string"},
+                                "activities": {
+                                    "type": "array",
+                                    "items": {
                                         "type": "object",
                                         "properties": {
+                                            "time": {"type": "string"},
                                             "name": {"type": "string"},
-                                            "area": {"type": "string"},
-                                            "style": {"type": "string"},
-                                            "price_range": {"type": "string"},
-                                            "notes": {"type": "string"},
+                                            "description": {"type": "string"},
+                                            "duration": {"type": "string"},
+                                            "location": {"type": "string"},
+                                            "cost_estimate": {"type": "string"},
+                                            "booking_required": {
+                                                "type": "boolean",
+                                                "default": False,
+                                            },
                                         },
-                                        "required": ["name", "area", "style", "price_range"],
+                                        "required": [
+                                            "time",
+                                            "name",
+                                            "description",
+                                            "duration",
+                                        ],
                                     },
-                                    "notes": {"type": "string"},
                                 },
-                                "required": [
-                                    "day_number",
-                                    "date",
-                                    "title",
-                                    "location",
-                                    "activities",
-                                ],
+                                "accommodation": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {"type": "string"},
+                                        "area": {"type": "string"},
+                                        "style": {"type": "string"},
+                                        "price_range": {"type": "string"},
+                                        "notes": {"type": "string"},
+                                    },
+                                    "required": ["name", "area", "style", "price_range"],
+                                },
+                                "notes": {"type": "string"},
                             },
-                        },
-                        "total_budget_estimate": {
-                            "type": "string",
-                            "description": "Total trip cost range (e.g., '$1500-2000')",
-                        },
-                        "highlights": {
-                            "type": "array",
-                            "items": {"type": "string"},
-                            "description": "Top 3-5 highlights of this option",
-                        },
-                        "caveats": {
-                            "type": "array",
-                            "items": {"type": "string"},
-                            "description": "Things to consider with this option",
+                            "required": [
+                                "day_number",
+                                "date",
+                                "title",
+                                "location",
+                                "activities",
+                            ],
                         },
                     },
-                    "required": [
-                        "title",
-                        "summary",
-                        "days",
-                        "total_budget_estimate",
-                        "highlights",
-                        "caveats",
-                    ],
+                    "total_budget_estimate": {
+                        "type": "string",
+                        "description": "Total trip cost range (e.g., '$1500-2000')",
+                    },
+                    "highlights": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Top 3-5 highlights of this option",
+                    },
+                    "caveats": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "Things to consider with this option",
+                    },
                 },
+                "required": [
+                    "title",
+                    "summary",
+                    "days",
+                    "total_budget_estimate",
+                    "highlights",
+                    "caveats",
+                ],
             },
         },
-        "required": ["destination", "start_date", "end_date", "proposals"],
+        "required": ["destination", "start_date", "end_date", "proposal"],
     },
 }
 
@@ -247,7 +242,8 @@ async def execute_flight_search(tool_input: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     result = await search_flights(request)
-    return result.model_dump()
+    # Use mode='json' to serialize datetime objects as ISO strings
+    return result.model_dump(mode='json')
 
 
 async def stream_response(
@@ -270,6 +266,7 @@ async def stream_response(
         current_tool_name = None
 
         async for event in stream:
+            print(f"[DEBUG claude_service] Event: {event.type}")
             if event.type == "content_block_start":
                 if hasattr(event.content_block, "type"):
                     if event.content_block.type == "text":
@@ -293,20 +290,30 @@ async def stream_response(
                 elif hasattr(event.delta, "partial_json"):
                     if current_tool_id and current_tool_id in tool_uses:
                         tool_uses[current_tool_id]["input_json"] += event.delta.partial_json
+                        print(f"[DEBUG claude_service] Accumulating JSON for {current_tool_name}, len={len(tool_uses[current_tool_id]['input_json'])}")
 
             elif event.type == "content_block_stop":
+                print(f"[DEBUG claude_service] content_block_stop, current_tool_id={current_tool_id}")
                 if current_tool_id and current_tool_id in tool_uses:
                     tool_data = tool_uses[current_tool_id]
+                    print(f"[DEBUG claude_service] Tool {tool_data['name']} input_json length: {len(tool_data['input_json'])}")
                     try:
                         tool_input = json.loads(tool_data["input_json"])
+                        print(f"[DEBUG claude_service] Parsed tool_input keys: {list(tool_input.keys())}")
 
                         if tool_data["name"] == "generate_itinerary":
-                            # Add UUIDs to proposals
-                            for proposal in tool_input.get("proposals", []):
-                                if "id" not in proposal:
-                                    proposal["id"] = str(uuid.uuid4())
+                            print(f"[DEBUG claude_service] Processing generate_itinerary")
+                            # Convert single proposal to proposals array for compatibility
+                            proposal = tool_input.get("proposal")
+                            if proposal and "id" not in proposal:
+                                proposal["id"] = str(uuid.uuid4())
+
+                            # Wrap single proposal in array for existing data structure
+                            tool_input["proposals"] = [proposal] if proposal else []
+                            del tool_input["proposal"]  # Remove the singular key
 
                             itinerary_data = ItineraryData(**tool_input)
+                            print(f"[DEBUG claude_service] ItineraryData validated! Destination: {itinerary_data.destination}")
                             yield {
                                 "type": "itinerary",
                                 "tool_id": current_tool_id,
@@ -328,6 +335,9 @@ async def stream_response(
                             }
 
                     except Exception as e:
+                        print(f"[DEBUG claude_service] Tool error: {type(e).__name__}: {e}")
+                        import traceback
+                        traceback.print_exc()
                         yield {
                             "type": "tool_error",
                             "tool_id": current_tool_id,

@@ -39,7 +39,7 @@ class ItineraryDay(BaseModel):
 
 
 class ItineraryProposal(BaseModel):
-    """One of 2-3 itinerary proposals for comparison."""
+    """A single itinerary proposal with day-by-day details."""
 
     id: str = Field(..., description="Unique proposal identifier")
     title: str = Field(..., description="Proposal theme (e.g., 'Adventure Focus')")
@@ -51,11 +51,11 @@ class ItineraryProposal(BaseModel):
 
 
 class ItineraryData(BaseModel):
-    """Complete itinerary with multiple proposals."""
+    """Complete itinerary with one or more proposals."""
 
     destination: str
     start_date: str
     end_date: str
     num_travelers: int = Field(1, ge=1)
-    proposals: List[ItineraryProposal] = Field(..., min_length=2, max_length=3)
+    proposals: List[ItineraryProposal] = Field(..., min_length=1, max_length=3)
     selected_proposal_id: Optional[str] = None
