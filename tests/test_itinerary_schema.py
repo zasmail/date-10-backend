@@ -160,8 +160,18 @@ class TestItineraryData:
             caveats=["Caveat"],
         )
 
+    def test_valid_itinerary_with_single_proposal(self):
+        """Itinerary with single proposal (new behavior)."""
+        itinerary = ItineraryData(
+            destination="Tarifa",
+            start_date="2026-03-15",
+            end_date="2026-03-20",
+            proposals=[self._make_proposal("Only One")],
+        )
+        assert len(itinerary.proposals) == 1
+
     def test_valid_itinerary_with_two_proposals(self):
-        """Itinerary with minimum 2 proposals."""
+        """Itinerary with two proposals."""
         itinerary = ItineraryData(
             destination="Tarifa",
             start_date="2026-03-15",
@@ -187,16 +197,15 @@ class TestItineraryData:
         )
         assert len(itinerary.proposals) == 3
 
-    def test_rejects_single_proposal(self):
-        """Must have at least 2 proposals."""
-        with pytest.raises(ValidationError) as exc_info:
+    def test_rejects_empty_proposals(self):
+        """Must have at least 1 proposal."""
+        with pytest.raises(ValidationError):
             ItineraryData(
                 destination="Tarifa",
                 start_date="2026-03-15",
                 end_date="2026-03-20",
-                proposals=[self._make_proposal("Only One")],
+                proposals=[],
             )
-        assert "List should have at least 2 items" in str(exc_info.value)
 
     def test_rejects_four_proposals(self):
         """Must have at most 3 proposals."""
