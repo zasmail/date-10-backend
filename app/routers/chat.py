@@ -1,13 +1,14 @@
 import json
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from sse_starlette.sse import EventSourceResponse
 
-from app.database import get_session
+from app.database import get_session, engine
 from app.models.conversation import Conversation, Message
+from app.models.itinerary import Itinerary
 from app.models.user_preferences import UserPreferences
 from app.schemas.chat import ChatRequest
 from app.schemas.preferences import PreferencesData
@@ -73,6 +74,7 @@ async def chat_stream(
         full_response = ""
         input_tokens = 0
         output_tokens = 0
+        generated_itineraries = []  # Track itineraries to save
 
         # Send conversation_id first so frontend knows it
         yield {
@@ -85,15 +87,24 @@ async def chat_stream(
             if chunk["type"] == "text":
                 full_response += chunk["content"]
                 yield {"data": json.dumps(chunk)}
+            elif chunk["type"] == "tool_start":
+                yield {"data": json.dumps(chunk)}
+            elif chunk["type"] == "flight_search_start":
+                yield {"data": json.dumps(chunk)}
+            elif chunk["type"] == "itinerary":
+                # Track the itinerary for saving
+                generated_itineraries.append(chunk["data"])
+                yield {"data": json.dumps(chunk)}
+            elif chunk["type"] == "flights":
+                yield {"data": json.dumps(chunk)}
+            elif chunk["type"] == "tool_error":
+                yield {"data": json.dumps(chunk)}
             elif chunk["type"] == "done":
                 input_tokens = chunk["usage"]["input_tokens"]
                 output_tokens = chunk["usage"]["output_tokens"]
                 yield {"data": json.dumps(chunk)}
 
-        # Save assistant message after streaming completes
-        # Need a new session since the original may be closed
-        from app.database import engine
-
+        # Save assistant message and itineraries after streaming completes
         with Session(engine) as save_session:
             assistant_message = Message(
                 conversation_id=conversation_id,
@@ -103,6 +114,18 @@ async def chat_stream(
                 output_tokens=output_tokens,
             )
             save_session.add(assistant_message)
+
+            # Save any generated itineraries
+            for itinerary_data in generated_itineraries:
+                itinerary = Itinerary(
+                    conversation_id=conversation_id,
+                    destination=itinerary_data.get("destination", ""),
+                    start_date=itinerary_data.get("start_date", ""),
+                    end_date=itinerary_data.get("end_date", ""),
+                    num_travelers=itinerary_data.get("num_travelers", 2),
+                    proposals_json=json.dumps(itinerary_data.get("proposals", [])),
+                )
+                save_session.add(itinerary)
 
             # Update conversation title if first exchange
             conv = save_session.get(Conversation, conversation_id)
@@ -142,7 +165,7 @@ async def list_conversations(session: Session = Depends(get_session)):
 async def get_conversation(
     conversation_id: str, session: Session = Depends(get_session)
 ):
-    """Get a conversation with all messages."""
+    """Get a conversation with all messages and itineraries."""
     conversation = session.get(Conversation, conversation_id)
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
@@ -151,6 +174,13 @@ async def get_conversation(
         select(Message)
         .where(Message.conversation_id == conversation_id)
         .order_by(Message.created_at)
+    ).all()
+
+    # Get itineraries for this conversation
+    itineraries = session.exec(
+        select(Itinerary)
+        .where(Itinerary.conversation_id == conversation_id)
+        .order_by(Itinerary.created_at)
     ).all()
 
     return {
@@ -167,4 +197,47 @@ async def get_conversation(
             }
             for m in messages
         ],
+        "itineraries": [
+            {
+                "id": it.id,
+                "destination": it.destination,
+                "start_date": it.start_date,
+                "end_date": it.end_date,
+                "num_travelers": it.num_travelers,
+                "proposals": json.loads(it.proposals_json),
+                "selected_proposal_id": it.selected_proposal_id,
+                "created_at": it.created_at.isoformat(),
+            }
+            for it in itineraries
+        ],
     }
+
+
+@router.delete("/conversations/{conversation_id}")
+async def delete_conversation(
+    conversation_id: str, session: Session = Depends(get_session)
+):
+    """Delete a conversation and all its messages."""
+    conversation = session.get(Conversation, conversation_id)
+    if not conversation:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+
+    # Delete messages
+    messages = session.exec(
+        select(Message).where(Message.conversation_id == conversation_id)
+    ).all()
+    for m in messages:
+        session.delete(m)
+
+    # Delete itineraries
+    itineraries = session.exec(
+        select(Itinerary).where(Itinerary.conversation_id == conversation_id)
+    ).all()
+    for it in itineraries:
+        session.delete(it)
+
+    # Delete conversation
+    session.delete(conversation)
+    session.commit()
+
+    return {"status": "deleted"}
