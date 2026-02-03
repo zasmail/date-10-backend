@@ -32,8 +32,13 @@ DESTINATION_TO_IATA = {
     "london": "LON",
     "paris": "PAR",
     "new york": "JFK",
+    "nyc": "JFK",
     "los angeles": "LAX",
     "san francisco": "SFO",
+    "colombia": "BOG",  # Bogotá El Dorado
+    "bogota": "BOG",
+    "cartagena": "CTG",
+    "medellin": "MDE",
 }
 
 
