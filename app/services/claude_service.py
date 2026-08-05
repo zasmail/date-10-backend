@@ -190,7 +190,9 @@ Returns actual flight prices and options from airlines.""",
     },
 }
 
-TOOLS = [GENERATE_ITINERARY_TOOL, SEARCH_FLIGHTS_TOOL]
+# Itinerary generation now uses /sections/generate endpoint via Create button
+# Chat is for exploration and questions, not formal itinerary creation
+TOOLS = [SEARCH_FLIGHTS_TOOL]
 
 
 async def execute_flight_search(tool_input: Dict[str, Any]) -> Dict[str, Any]:
@@ -346,6 +348,53 @@ async def stream_response(
 
                     current_tool_id = None
                     current_tool_name = None
+
+            elif event.type == "message_stop":
+                # Process any pending tool uses that didn't get content_block_stop
+                if current_tool_id and current_tool_id in tool_uses:
+                    tool_data = tool_uses[current_tool_id]
+                    print(f"[DEBUG claude_service] Processing pending tool {tool_data['name']} on message_stop")
+                    try:
+                        tool_input = json.loads(tool_data["input_json"])
+
+                        if tool_data["name"] == "generate_itinerary":
+                            # Convert single proposal to proposals array
+                            proposal = tool_input.get("proposal")
+                            if proposal and "id" not in proposal:
+                                proposal["id"] = str(uuid.uuid4())
+                            tool_input["proposals"] = [proposal] if proposal else []
+                            del tool_input["proposal"]
+
+                            itinerary_data = ItineraryData(**tool_input)
+                            print(f"[DEBUG claude_service] ItineraryData validated! Destination: {itinerary_data.destination}")
+                            yield {
+                                "type": "itinerary",
+                                "tool_id": current_tool_id,
+                                "data": itinerary_data.model_dump(),
+                            }
+
+                        elif tool_data["name"] == "search_flights":
+                            yield {
+                                "type": "flight_search_start",
+                                "tool_id": current_tool_id,
+                                "query": tool_input,
+                            }
+                            flight_results = await execute_flight_search(tool_input)
+                            yield {
+                                "type": "flights",
+                                "tool_id": current_tool_id,
+                                "data": flight_results,
+                            }
+
+                    except Exception as e:
+                        print(f"[DEBUG claude_service] Tool error in message_stop: {type(e).__name__}: {e}")
+                        import traceback
+                        traceback.print_exc()
+                        yield {
+                            "type": "tool_error",
+                            "tool_id": current_tool_id,
+                            "error": str(e),
+                        }
 
         final_message = await stream.get_final_message()
         yield {

@@ -8,8 +8,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import create_db_and_tables
-from app.models import Trip, Preference, UserPreferences, Conversation, Message, Itinerary, SharedItinerary, ItineraryVersion  # noqa: F401 - needed for table creation
-from app.routers import health_router, preferences_router, chat_router, itineraries_router, flights_router, accommodations_router, activities_router, share_router, versions_router, geocoding_router, refinements_router
+from app.models import Trip, Preference, UserPreferences, Conversation, Message, Itinerary, SharedItinerary, ItineraryVersion, SectionedItineraryModel  # noqa: F401 - needed for table creation
+from app.routers import health_router, preferences_router, chat_router, itineraries_router, flights_router, accommodations_router, activities_router, share_router, versions_router, geocoding_router, refinements_router, sections_router, agent_chat_router
 
 
 @asynccontextmanager
@@ -54,3 +54,5 @@ app.include_router(share_router)
 app.include_router(versions_router)
 app.include_router(geocoding_router)
 app.include_router(refinements_router)
+app.include_router(sections_router)
+app.include_router(agent_chat_router)

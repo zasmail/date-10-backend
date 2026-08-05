@@ -117,48 +117,71 @@ async def chat_stream(
                 input_tokens = chunk["usage"]["input_tokens"]
                 output_tokens = chunk["usage"]["output_tokens"]
                 print(f"[DEBUG] Done. Itineraries collected: {len(generated_itineraries)}")  # Debug log
+
+                # Save itineraries BEFORE sending done event so we can send IDs to frontend
+                saved_itinerary_ids = []
+                with Session(engine) as save_session:
+                    # Only save assistant message if it has content
+                    if full_response and full_response.strip():
+                        assistant_message = Message(
+                            conversation_id=conversation_id,
+                            role="assistant",
+                            content=full_response,
+                            input_tokens=input_tokens,
+                            output_tokens=output_tokens,
+                        )
+                        save_session.add(assistant_message)
+
+                    # Save any generated itineraries and collect their IDs
+                    print(f"[DEBUG] Saving {len(generated_itineraries)} itineraries to DB")  # Debug log
+                    for itinerary_data in generated_itineraries:
+                        print(f"[DEBUG] Saving itinerary: {itinerary_data.get('destination')}")  # Debug log
+                        itinerary = Itinerary(
+                            conversation_id=conversation_id,
+                            destination=itinerary_data.get("destination", ""),
+                            start_date=itinerary_data.get("start_date", ""),
+                            end_date=itinerary_data.get("end_date", ""),
+                            num_travelers=itinerary_data.get("num_travelers", 2),
+                            proposals_json=json.dumps(itinerary_data.get("proposals", [])),
+                        )
+                        save_session.add(itinerary)
+                        save_session.flush()  # Flush to get ID without committing
+                        saved_itinerary_ids.append({
+                            "id": itinerary.id,
+                            "destination": itinerary.destination,
+                            "start_date": itinerary.start_date,
+                            "end_date": itinerary.end_date,
+                        })
+                        print(f"[DEBUG] Itinerary saved with ID: {itinerary.id}")  # Debug log
+
+                    # Update conversation title if first exchange
+                    conv = save_session.get(Conversation, conversation_id)
+                    if conv and not conv.title and is_first_exchange:
+                        # Use first ~50 chars of user message as title
+                        conv.title = (
+                            user_message_content[:50]
+                            + ("..." if len(user_message_content) > 50 else "")
+                        )
+
+                    if conv:
+                        conv.updated_at = datetime.utcnow()
+
+                    save_session.commit()
+
+                # Send itinerary_saved events to frontend with IDs
+                for saved_itin in saved_itinerary_ids:
+                    itinerary_saved_event = {
+                        "type": "itinerary_saved",
+                        "itinerary_id": saved_itin["id"],
+                        "destination": saved_itin["destination"],
+                        "start_date": saved_itin["start_date"],
+                        "end_date": saved_itin["end_date"],
+                    }
+                    print(f"[DEBUG] Sending itinerary_saved event: {saved_itin['id']}")  # Debug log
+                    yield {"data": json.dumps(itinerary_saved_event)}
+
+                # NOW send the done event
                 yield {"data": json.dumps(chunk)}
-
-        # Save assistant message and itineraries after streaming completes
-        with Session(engine) as save_session:
-            # Only save assistant message if it has content
-            if full_response and full_response.strip():
-                assistant_message = Message(
-                    conversation_id=conversation_id,
-                    role="assistant",
-                    content=full_response,
-                    input_tokens=input_tokens,
-                    output_tokens=output_tokens,
-                )
-                save_session.add(assistant_message)
-
-            # Save any generated itineraries
-            print(f"[DEBUG] Saving {len(generated_itineraries)} itineraries to DB")  # Debug log
-            for itinerary_data in generated_itineraries:
-                print(f"[DEBUG] Saving itinerary: {itinerary_data.get('destination')}")  # Debug log
-                itinerary = Itinerary(
-                    conversation_id=conversation_id,
-                    destination=itinerary_data.get("destination", ""),
-                    start_date=itinerary_data.get("start_date", ""),
-                    end_date=itinerary_data.get("end_date", ""),
-                    num_travelers=itinerary_data.get("num_travelers", 2),
-                    proposals_json=json.dumps(itinerary_data.get("proposals", [])),
-                )
-                save_session.add(itinerary)
-
-            # Update conversation title if first exchange
-            conv = save_session.get(Conversation, conversation_id)
-            if conv and not conv.title and is_first_exchange:
-                # Use first ~50 chars of user message as title
-                conv.title = (
-                    user_message_content[:50]
-                    + ("..." if len(user_message_content) > 50 else "")
-                )
-
-            if conv:
-                conv.updated_at = datetime.utcnow()
-
-            save_session.commit()
 
     return EventSourceResponse(generate())
 
@@ -260,3 +283,26 @@ async def delete_conversation(
     session.commit()
 
     return {"status": "deleted"}
+
+
+@router.delete("/conversations")
+async def delete_all_conversations(session: Session = Depends(get_session)):
+    """Delete all conversations, messages, and itineraries."""
+    # Delete all itineraries
+    itineraries = session.exec(select(Itinerary)).all()
+    for it in itineraries:
+        session.delete(it)
+
+    # Delete all messages
+    messages = session.exec(select(Message)).all()
+    for m in messages:
+        session.delete(m)
+
+    # Delete all conversations
+    conversations = session.exec(select(Conversation)).all()
+    for c in conversations:
+        session.delete(c)
+
+    session.commit()
+
+    return {"status": "deleted", "count": len(conversations)}

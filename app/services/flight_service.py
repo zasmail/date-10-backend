@@ -1,10 +1,13 @@
 """Trip Ninja API service for flight search."""
 
 import os
+import logging
 from datetime import datetime
 from typing import List, Optional
 import uuid
 import httpx
+
+logger = logging.getLogger(__name__)
 
 from app.schemas.flight import (
     FlightSearchRequest,
@@ -125,25 +128,43 @@ async def search_flights(
         ],
         "travellers": request.travellers,
         "currency": request.currency,
+        "country_code": "US",
+        "cabin_class": request.segments[0].cabin_class if request.segments else "E",
+        "time_value": 40,
+        "num_results": 500,
+        "markup_source": "onsite",
+        "return_single_pnr_itineraries": True,
+        "single_pnr": True,
         "virtual_interlining": request.virtual_interlining,
     }
 
     headers = {
         "Authorization": f"Basic {TRIP_NINJA_TOKEN}",
         "Content-Type": "application/json",
+        "coast-demo": "allow",
     }
 
     async with httpx.AsyncClient(timeout=30.0) as client:
         try:
+            print(f"\n{'='*80}")
+            print(f"[FLIGHT_SERVICE] Calling Trip Ninja API: {TRIP_NINJA_URL}")
+            print(f"[FLIGHT_SERVICE] Request payload:")
+            import json
+            print(json.dumps(api_request, indent=2))
+            print(f"[FLIGHT_SERVICE] Headers: {headers}")
+            print(f"{'='*80}\n")
             response = await client.post(
                 TRIP_NINJA_URL,
                 json=api_request,
                 headers=headers,
             )
+            print(f"[FLIGHT_SERVICE] Trip Ninja response status: {response.status_code}")
+            print(f"[FLIGHT_SERVICE] Trip Ninja full response: {response.text}")
             response.raise_for_status()
             data = response.json()
-        except httpx.HTTPStatusError:
+        except httpx.HTTPStatusError as e:
             # Return empty results on API error
+            logger.error(f"Trip Ninja HTTP error: {e.response.status_code} - {e.response.text}")
             return FlightSearchResponse(
                 search_id=search_id,
                 searched_at=searched_at,
@@ -153,7 +174,8 @@ async def search_flights(
                 cheapest_price=None,
                 price_range=None,
             )
-        except Exception:
+        except Exception as e:
+            logger.error(f"Trip Ninja API error: {str(e)}")
             return FlightSearchResponse(
                 search_id=search_id,
                 searched_at=searched_at,
@@ -165,6 +187,36 @@ async def search_flights(
             )
 
     # Parse the response
+    print(f"[FLIGHT_SERVICE] Response data keys: {data.keys()}")
+    print(f"[FLIGHT_SERVICE] Has 'results' key: {'results' in data}")
+    print(f"[FLIGHT_SERVICE] Has 'trip_id' key: {'trip_id' in data}")
+
+    # If we got a trip_id, we need to poll for results
+    if "trip_id" in data and "results" not in data:
+        trip_id = data["trip_id"]
+        print(f"[FLIGHT_SERVICE] Got trip_id, polling for results...")
+
+        # Poll for results (try up to 10 times, 1 second apart)
+        import asyncio
+        for attempt in range(10):
+            await asyncio.sleep(1)
+
+            poll_response = await client.get(
+                f"{TRIP_NINJA_URL}{trip_id}/",
+                headers=headers,
+            )
+
+            if poll_response.status_code == 200:
+                poll_data = poll_response.json()
+                print(f"[FLIGHT_SERVICE] Poll attempt {attempt + 1}: {list(poll_data.keys())}")
+
+                if "results" in poll_data:
+                    print(f"[FLIGHT_SERVICE] Got results! {len(poll_data.get('results', []))} options")
+                    data = poll_data
+                    break
+        else:
+            print(f"[FLIGHT_SERVICE] Polling timeout - no results after 10 attempts")
+
     options = []
     results = data.get("results", [])
 

@@ -142,7 +142,33 @@ class ActivitiesAgent(BaseAgent):
                 "properties": {
                     "days": {
                         "type": "array",
-                        "description": "Complete array of all activity days with day_number, date, title, location, and activities list for each day",
+                        "description": "Complete array of all activity days. Each day MUST have: day_number, date, title, location, and activities array. Each activity MUST have: time, name, description, duration (all required fields).",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "day_number": {"type": "integer"},
+                                "date": {"type": "string"},
+                                "title": {"type": "string"},
+                                "location": {"type": "string"},
+                                "activities": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "time": {"type": "string", "description": "Time of day (e.g., '09:00', 'morning')"},
+                                            "name": {"type": "string", "description": "REQUIRED: Activity name (e.g., 'Temple Tour', 'Surf Lesson')"},
+                                            "description": {"type": "string", "description": "REQUIRED: What this activity involves"},
+                                            "duration": {"type": "string", "description": "REQUIRED: How long (e.g., '2 hours', '3-4 hours')"},
+                                            "location": {"type": "string"},
+                                            "cost_estimate": {"type": "string"},
+                                            "operator": {"type": "string"},
+                                        },
+                                        "required": ["time", "name", "description", "duration"],
+                                    },
+                                },
+                            },
+                            "required": ["day_number", "date", "title", "location", "activities"],
+                        },
                     },
                     "total_activities_cost": {
                         "type": "string",
@@ -185,6 +211,19 @@ class ActivitiesAgent(BaseAgent):
             return True
         current_days = handoff.current_state.get("days", [])
         return len(current_days) == 0
+
+    def _get_tools_for_mode(self, handoff: SectionHandoff) -> List[Dict[str, Any]]:
+        """Return filtered tools based on generation vs refinement mode."""
+        if self._is_generation_mode(handoff):
+            # In generation mode, ONLY provide update_activities_section
+            # Remove search_operators to prevent distraction
+            return [
+                tool for tool in self.TOOLS
+                if tool["name"] in ["update_activities_section", "report_cross_section_impact"]
+            ]
+        else:
+            # In refinement mode, provide all tools
+            return self.TOOLS
 
     def _build_system_prompt(self, handoff: SectionHandoff) -> str:
         """Build context-aware system prompt with mode detection."""
@@ -342,6 +381,7 @@ class ActivitiesAgent(BaseAgent):
         self.cross_section_impacts = []
 
         system_prompt = self._build_system_prompt(handoff)
+        tools = self._get_tools_for_mode(handoff)  # Filter tools based on mode
         changes_made = []
 
         async with self.client.messages.stream(
@@ -349,7 +389,7 @@ class ActivitiesAgent(BaseAgent):
             max_tokens=4096,
             system=system_prompt,
             messages=messages,
-            tools=self.TOOLS,
+            tools=tools,  # Use filtered tools
         ) as stream:
             tool_inputs: Dict[str, str] = {}
             tool_names: Dict[str, str] = {}

@@ -5,3 +5,4 @@ from .conversation import Conversation, Message
 from .itinerary import Itinerary
 from .shared_itinerary import SharedItinerary
 from .itinerary_version import ItineraryVersion
+from .sectioned_itinerary import SectionedItineraryModel, migrate_proposal_to_sections

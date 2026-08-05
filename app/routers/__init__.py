@@ -9,3 +9,5 @@ from .share import router as share_router
 from .versions import router as versions_router
 from .geocoding import router as geocoding_router
 from .refinements import router as refinements_router
+from .sections import router as sections_router
+from .agent_chat import router as agent_chat_router

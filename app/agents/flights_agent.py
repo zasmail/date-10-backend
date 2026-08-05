@@ -204,18 +204,35 @@ class FlightsAgent(BaseAgent):
             origin_iata = get_iata_code(tool_input["origin"]) or tool_input["origin"].upper()
             dest_iata = get_iata_code(tool_input["destination"]) or tool_input["destination"].upper()
 
-            segment = FlightSegmentRequest(
-                id=tool_input["segment_id"],
-                departure_date=tool_input["date"],
-                cabin_class=tool_input.get("cabin_class", "E"),
-                from_iata=origin_iata,
-                to_iata=dest_iata,
-                from_type="C",
-                to_type="C",
-            )
+            # Store this segment request for batching
+            if not hasattr(self, '_pending_segments'):
+                self._pending_segments = {}
+
+            self._pending_segments[tool_input["segment_id"]] = {
+                "id": tool_input["segment_id"],
+                "origin": origin_iata,
+                "destination": dest_iata,
+                "date": tool_input["date"],
+                "cabin_class": tool_input.get("cabin_class", "E"),
+                "num_travelers": tool_input.get("num_travelers", 1),
+            }
+
+            # Build FlightSearchRequest with ALL accumulated segments (1-indexed, sorted)
+            all_segments = []
+            for seg_id in sorted(self._pending_segments.keys()):
+                seg_data = self._pending_segments[seg_id]
+                all_segments.append(FlightSegmentRequest(
+                    id=seg_id,  # Keep original segment ID
+                    departure_date=seg_data["date"],
+                    cabin_class=seg_data["cabin_class"],
+                    from_iata=seg_data["origin"],
+                    to_iata=seg_data["destination"],
+                    from_type="C",
+                    to_type="C",
+                ))
 
             request = FlightSearchRequest(
-                segments=[segment],
+                segments=all_segments,  # Send ALL segments together
                 travellers=["ADT"] * tool_input.get("num_travelers", 1),
                 currency="USD",
                 virtual_interlining=True,
